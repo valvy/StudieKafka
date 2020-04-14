@@ -1,6 +1,9 @@
-package nl.hvanderheijden.chapter2
+package nl.hvanderheijden.chapter2.producers
+
 import java.util.logging.Logger
+
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
+import nl.hvanderheijden.chapter2.core.Producer
 import org.apache.kafka.clients.producer.KafkaProducer
 // {"event":"CUSTOMER_CONSULTS_ETHPRICE","customer":"test","currency":"pizza","timestamp":"1"}
 class Validator(
@@ -14,10 +17,18 @@ class Validator(
 
   private val MAPPER: ObjectMapper = new ObjectMapper()
 
+
+  private def writeInvalid: String => Unit = Producer.write(this.producer)(this.invalidMessages)
+
+  private def writeValid: String => Unit = Producer.write(this.producer)(this.validMessages)
+
+
+
   override def process(message: String): Unit = {
     try {
       val root: JsonNode = MAPPER.readTree(message)
       logger.info(message)
+
       def getRequiredParameters(key: Seq[String]): String = key match {
         case Seq(x) if root.has(x) => ""
         case Seq(x) if !root.has(x) => s"The key [${x}] is missing. "
@@ -30,15 +41,15 @@ class Validator(
       logger.info(errors)
       this.logger.info(errors)
       if (errors.length > 0) {
-        Producer.write(this.producer)(this.invalidMessages)( s"""{"error": "${errors}"}""")
+        writeInvalid( s"""{"error": "${errors}"}""")
       }
       else {
-        Producer.write(this.producer)(this.validMessages)(MAPPER.writeValueAsString(root))
+        writeValid(MAPPER.writeValueAsString(root))
       }
     } catch {
       case e: Exception => {
         this.logger.warning(s"Could not parse this message ${e.getMessage}")
-        Producer.write(this.producer)(this.invalidMessages)( s"""{"error": "${e.getClass.getSimpleName} with ${e.getMessage}"}""")
+        writeInvalid( s"""{"error": "${e.getClass.getSimpleName} with ${e.getMessage}"}""")
       }
     }
   }

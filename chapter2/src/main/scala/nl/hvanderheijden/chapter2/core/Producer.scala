@@ -1,4 +1,4 @@
-package nl.hvanderheijden.chapter2
+package nl.hvanderheijden.chapter2.core
 
 import java.util.Properties
 

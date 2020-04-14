@@ -1,12 +1,8 @@
-package nl.hvanderheijden.chapter2
-
-import java.io.File
-import java.net.InetAddress
+package nl.hvanderheijden.chapter2.producers
 
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
-import com.maxmind.db.CHMCache
-import com.maxmind.geoip2.DatabaseReader
+import nl.hvanderheijden.chapter2.core.Producer
 import nl.hvanderheijden.chapter2.extractors.{GeoIpService, OpenExhangeService}
 import org.apache.kafka.clients.producer.KafkaProducer
 

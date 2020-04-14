@@ -1,8 +1,8 @@
-package nl.hvanderheijden.chapter2
+package nl.hvanderheijden.chapter2.core
 
 import java.time.Duration
+import java.util.Collections
 import java.util.logging.Logger
-import java.util.{Collections, Properties}
 
 import org.apache.kafka.clients.consumer.{ConsumerRecords, KafkaConsumer}
 

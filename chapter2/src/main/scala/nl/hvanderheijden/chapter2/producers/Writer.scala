@@ -1,5 +1,6 @@
-package nl.hvanderheijden.chapter2
+package nl.hvanderheijden.chapter2.producers
 
+import nl.hvanderheijden.chapter2.core.Producer
 import org.apache.kafka.clients.producer.KafkaProducer
 
 class Writer(
