@@ -1,13 +1,20 @@
 package nl.hvanderheijden.kioto
 
-import java.util.concurrent.TimeUnit
+import java.util.logging.Logger
 
-import com.github.javafaker.Faker
+object Main extends Object with App {
+  private val logger: Logger = Logger.getLogger(this.getClass.getName)
+  if(args.length == 1 ) {
+    if (args(0).equals("producer")) {
+      new PlainProducer("localhost:29092").produce(2)
+    } else {
+      new PlainProcessor("localhost:29092").process()
+    }
+  } else {
+    logger.info("Run with producer")
 
-object Hello extends Greeting with App {
-  new PlainProducer("localhost:29092").produce(2)
+  }
+
+
 }
 
-trait Greeting {
-  lazy val greeting: String = "hello"
-}
