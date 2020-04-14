@@ -7,13 +7,13 @@ import java.util.{Collections, Properties}
 import org.apache.kafka.clients.consumer.{ConsumerRecords, KafkaConsumer}
 
 class Reader(
-              val server: String,
-              val groupId: String,
-              val topic: String) extends Consumer {
+              private val server: String,
+              private val groupId: String,
+              private val topic: String) extends Consumer {
 
-  val logger: Logger = Logger.getLogger(this.getClass.getName)
+  private val logger: Logger = Logger.getLogger(this.getClass.getName)
 
-  val consumer: KafkaConsumer[String, String] =  new KafkaConsumer(Consumer.createConfig(server, groupId))
+  private val consumer: KafkaConsumer[String, String] =  new KafkaConsumer(Consumer.createConfig(server, groupId))
 
   def run[K,V](producer: Producer): Unit = {
     logger.info(s"Reading ${server} on groupID ${groupId} with topic ${topic}")
@@ -22,8 +22,6 @@ class Reader(
     def loop(): Unit = {
 
       val records: ConsumerRecords[String,String] = this.consumer.poll(Duration.ofMillis(1000))
-
-      records.forEach(x => println(x.value()))
       records.forEach(x =>  producer.process(x.value()))
       loop()
     }
