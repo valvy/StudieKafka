@@ -1,13 +1,8 @@
 package nl.hvanderheijden.chapter2
-
-import java.io.IOException
-import java.util.NoSuchElementException
 import java.util.logging.Logger
-
-import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import org.apache.kafka.clients.producer.KafkaProducer
-
+// {"event":"CUSTOMER_CONSULTS_ETHPRICE","customer":"test","currency":"pizza","timestamp":"1"}
 class Validator(
                  private val servers: String,
                  private val validMessages: String,
@@ -30,7 +25,7 @@ class Validator(
         case Seq(x:String, xs@_*) if !root.has(x) => s"The key [${x}] is missing. ${getRequiredParameters(key.tail)}"
       }
 
-// {"event":"CUSTOMER_CONSULTS_ETHPRICE","customer":"test","currency":"pizza","timestamp":"1"}
+
       val errors = getRequiredParameters(Seq("event", "customer", "currency", "timestamp"))
       logger.info(errors)
       this.logger.info(errors)

@@ -18,19 +18,14 @@ class Reader(
   def run[K,V](producer: Producer): Unit = {
     logger.info(s"Reading ${server} on groupID ${groupId} with topic ${topic}")
     this.consumer.subscribe(Collections.singletonList(this.topic));
+
     @scala.annotation.tailrec
     def loop(): Unit = {
-
       val records: ConsumerRecords[String,String] = this.consumer.poll(Duration.ofMillis(1000))
       records.forEach(x =>  producer.process(x.value()))
       loop()
     }
     loop()
-  }
-
-
-  def hello: String = {
-      "Hello"
   }
 }
 
