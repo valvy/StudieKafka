@@ -5,8 +5,9 @@ import java.util
 import com.fasterxml.jackson.core.JsonProcessingException
 import org.apache.kafka.common.serialization.Serializer
 
-class HealthCheckSerializer extends Serializer[Object] {
-  override def serialize(topic: String, data: Object): Array[Byte] = {
+class HealthCheckSerializer extends Serializer[HealthCheck] {
+
+  override def serialize(topic: String, data: HealthCheck): Array[Byte] = {
     if(data == null) {
       null
     } else {

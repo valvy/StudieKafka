@@ -2,6 +2,7 @@ package nl.hvanderheijden.kioto
 
 import java.util.logging.Logger
 
+import nl.hvanderheijden.kioto.consumers.PlainProcessor
 import nl.hvanderheijden.kioto.producers.{CustomProducer, PlainProducer}
 
 object Main extends Object with App {
