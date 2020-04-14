@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import com.maxmind.db.CHMCache
 import com.maxmind.geoip2.DatabaseReader
+import nl.hvanderheijden.chapter2.extractors.{GeoIpService, OpenExhangeService}
 import org.apache.kafka.clients.producer.KafkaProducer
 
 class Enricher(
@@ -18,19 +19,20 @@ class Enricher(
 
   private val MAPPER = new ObjectMapper()
 
+  private val geoIpService = new GeoIpService
+
+  private val openExhangeService = new OpenExhangeService
+
   private def writeInvalid: String => Unit = Producer.write(this.producer)(this.invalidMessages)
 
   private def writeValid: String => Unit = Producer.write(this.producer)(this.validMessages)
 
+
+
   /*
-  {
-   "event": "CUSTOMER_CONSULTS_ETHPRICE",
-   "customer": {"id": "14862768","name": "Snowden, Edward", "ipAddress": "95.31.18.111"},"currency": {"name": "ethereum","price": "RUB"},"timestamp": "2018-09-28T09:09:09Z"}
+  {"event": "CUSTOMER_CONSULTS_ETHPRICE", "customer": {"id": "14862768","name": "Snowden, Edward", "ipAddress": "95.31.18.111"},"currency": {"name": "ethereum","price": "RUB"},"timestamp": "2018-09-28T09:09:09Z"}
    */
 
-  def getDataBaseURI: File = new File(Constants.DATABASE_PATH)
-
-  private val client: DatabaseReader = new DatabaseReader.Builder(getDataBaseURI).withCache(new CHMCache()).build();
 
   override def process(message: String): Unit = {
     try {
@@ -40,14 +42,25 @@ class Enricher(
       if(ipAddressNode.isMissingNode) {
         writeInvalid(s"""{"error": "Customer.IP adress is missing"}""")
       } else {
+        val currencyNode: JsonNode = root.path("currency").path("price")
+        if(currencyNode.isMissingNode) {
+          writeInvalid(s"""{"error": "currency.price is missing"}""")
+        } else {
 
-        val ipAddress = InetAddress.getByName(ipAddressNode.textValue())
-        val response = client.country(ipAddress)
 
-        val nRoot: ObjectNode = root.deepCopy()
-        nRoot.`with`("customer").put("country", response.getCountry.getName)
+          val nRoot: ObjectNode = root.deepCopy()
 
-        writeValid(MAPPER.writeValueAsString(nRoot))
+
+          nRoot.`with`("customer").put("country",
+            geoIpService.getLocation(ipAddressNode.textValue()).getOrElse("null")
+          )
+
+          nRoot.`with`("currency").put("exchangeRate",
+            s"${openExhangeService.getPrice(currencyNode.textValue()).getOrElse(0)}"
+          )
+
+          writeValid(MAPPER.writeValueAsString(nRoot))
+        }
       }
 
     } catch {
