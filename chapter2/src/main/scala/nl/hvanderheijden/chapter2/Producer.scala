@@ -10,11 +10,7 @@ trait Producer {
 }
 
 object Producer{
-  def write(
-             producer: KafkaProducer[String,String],
-             topic: String,
-             message: String
-           ): Unit = {
+  def write(producer: KafkaProducer[String,String])(topic: String)(message: String): Unit = {
       producer.send(new ProducerRecord[String,String](topic, message))
   }
 

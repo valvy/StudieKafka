@@ -8,6 +8,6 @@ class Writer(
 
   private val producer = new KafkaProducer[String, String](Producer.createConfig(servers))
 
-  override def process(message: String): Unit = Producer.write(this.producer, this.topic, message)
+  override def process(message: String): Unit = Producer.write(this.producer)(this.topic)(message)
 
 }

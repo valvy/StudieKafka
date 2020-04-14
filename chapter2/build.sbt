@@ -16,6 +16,7 @@ resolvers ++= Seq(
 lazy val dependencies = Seq(
   scalaTest % Test,
   "com.fasterxml.jackson.core" % "jackson-core" % "2.10.3",
+  "com.maxmind.geoip2" % "geoip2" % "2.13.1",
   "org.apache.logging.log4j" % "log4j-api" % "2.13.1",
   "org.apache.logging.log4j" % "log4j-core" % "2.13.1" % Runtime,
   "org.apache.kafka" % "kafka-streams" % kafkaVersion,

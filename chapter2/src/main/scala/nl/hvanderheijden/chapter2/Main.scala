@@ -15,13 +15,10 @@ object Main {
     val validTopic: String = "valid-messages"
     val invalidTopic: String = "invalid-messages"
 
-
-    //val sourceTopic: String = "input-topic"// args(2)
-    //val targetTopic: String = "output-topic"//args(
-
     val reader = new Reader(servers, groupId, inputTopic)
-    val validator = new Validator(servers, validTopic, invalidTopic)
+    val validator = new Enricher(servers, validTopic, invalidTopic)//new Validator(servers, validTopic, invalidTopic)
     reader.run(validator)
+
   }
 
 

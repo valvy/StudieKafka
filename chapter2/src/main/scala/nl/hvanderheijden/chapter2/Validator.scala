@@ -30,15 +30,15 @@ class Validator(
       logger.info(errors)
       this.logger.info(errors)
       if (errors.length > 0) {
-        Producer.write(this.producer, this.invalidMessages, s"""{"error": "${errors}"}""")
+        Producer.write(this.producer)(this.invalidMessages)( s"""{"error": "${errors}"}""")
       }
       else {
-        Producer.write(this.producer, this.validMessages, MAPPER.writeValueAsString(root))
+        Producer.write(this.producer)(this.validMessages)(MAPPER.writeValueAsString(root))
       }
     } catch {
       case e: Exception => {
         this.logger.warning(s"Could not parse this message ${e.getMessage}")
-        Producer.write(this.producer, this.invalidMessages, s"""{"erdsasdfror": "${e.getClass.getSimpleName} with ${e.getMessage}"}""")
+        Producer.write(this.producer)(this.invalidMessages)( s"""{"error": "${e.getClass.getSimpleName} with ${e.getMessage}"}""")
       }
     }
   }
