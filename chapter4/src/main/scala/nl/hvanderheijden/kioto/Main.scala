@@ -11,11 +11,11 @@ object Main extends Object with App {
     if (args(0).equals("producer")) {
       new CustomProducer("localhost:29092").produce(2)
     } else {
-      new PlainProcessor("localhost:29092").process()
+      new PlainStreamsProcessor("localhost:29092").process()
+      //new PlainProcessor("localhost:29092").process()
     }
   } else {
     logger.info("Run with producer")
-
   }
 
 
