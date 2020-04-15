@@ -1,8 +1,9 @@
-package nl.hvanderheijden.kioto
+package nl.hvanderheijden.kioto.serdes
 
 import java.util
 
 import com.fasterxml.jackson.core.JsonProcessingException
+import nl.hvanderheijden.kioto.{Constants, HealthCheck}
 import org.apache.kafka.common.serialization.Serializer
 
 class HealthCheckSerializer extends Serializer[HealthCheck] {

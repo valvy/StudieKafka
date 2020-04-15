@@ -14,8 +14,8 @@ object Constants {
   jsonMapper.setDateFormat(new StdDateFormat())
 
   def getHealthChecksTopic: String = "healthchecks"
-
-  def getHealthChecksAvroTopic: String = "healthchecks-avro"
+  def getEventsTopic: String = "events"
+  def getAggregatesTopic: String= "aggregates"
 
   def getUptimesTopic: String = "uptimes"
 

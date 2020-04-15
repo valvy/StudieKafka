@@ -1,5 +1,6 @@
-package nl.hvanderheijden.kioto
+package nl.hvanderheijden.kioto.serdes
 
+import nl.hvanderheijden.kioto.HealthCheck
 import org.apache.kafka.common.serialization.{Deserializer, Serde, Serializer}
 
 class HealthCheckSerde  extends Serde[HealthCheck]{

@@ -1,7 +1,8 @@
-package nl.hvanderheijden.kioto
+package nl.hvanderheijden.kioto.serdes
 
 import java.util
 
+import nl.hvanderheijden.kioto.{Constants, HealthCheck}
 import org.apache.kafka.common.serialization.Deserializer
 
 class HealthCheckDeserializer extends Deserializer[HealthCheck] {

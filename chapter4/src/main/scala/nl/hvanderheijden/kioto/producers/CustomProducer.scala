@@ -4,7 +4,8 @@ import java.util.Properties
 import java.util.concurrent.TimeUnit
 
 import com.github.javafaker.Faker
-import nl.hvanderheijden.kioto.{Constants, HealthCheck, HealthCheckSerializer}
+import nl.hvanderheijden.kioto.serdes.HealthCheckSerializer
+import nl.hvanderheijden.kioto.{Constants, HealthCheck}
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord}
 import org.apache.kafka.common.serialization.StringSerializer
 

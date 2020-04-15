@@ -3,7 +3,8 @@ package nl.hvanderheijden.kioto.consumers
 import java.time.{Duration, LocalDate, Period, ZoneId}
 import java.util.Properties
 
-import nl.hvanderheijden.kioto.{Constants, HealthCheck, HealthCheckDeserializer, HealthCheckSerde, HealthCheckSerializer}
+import nl.hvanderheijden.kioto.serdes.HealthCheckSerde
+import nl.hvanderheijden.kioto.{Constants, HealthCheck}
 import org.apache.kafka.streams.KafkaStreams
 import org.apache.kafka.streams.scala.ImplicitConversions._
 import org.apache.kafka.streams.scala.Serdes._
@@ -27,7 +28,7 @@ final class CustomStreamsProcessor(
     val healthCheckStream = topology.stream(Constants.getHealthChecksTopic)(Consumed.`with`(Serdes.String, customSerde))
 
     val uptimeStream = healthCheckStream.map[String, String]( (key , v ) =>  {
-      val healthCheck = v.asInstanceOf[HealthCheck]
+      val healthCheck = v
       val uptime = Period.between(
         healthCheck.lastStartedAt.
           toInstant.atZone(ZoneId.systemDefault())

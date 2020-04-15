@@ -4,7 +4,8 @@ import java.time.{Duration, LocalDate, Period, ZoneId}
 import java.util.{Collections, Properties}
 import java.util.logging.Logger
 
-import nl.hvanderheijden.kioto.{Constants, HealthCheck, HealthCheckDeserializer}
+import nl.hvanderheijden.kioto.serdes.HealthCheckDeserializer
+import nl.hvanderheijden.kioto.{Constants, HealthCheck}
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord}
 import org.apache.kafka.common.serialization.{StringDeserializer, StringSerializer}
