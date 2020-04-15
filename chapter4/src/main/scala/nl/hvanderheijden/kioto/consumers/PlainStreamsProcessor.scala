@@ -1,15 +1,14 @@
-package nl.hvanderheijden.kioto
+package nl.hvanderheijden.kioto.consumers
 
 import java.time.{Duration, LocalDate, Period, ZoneId}
 import java.util.Properties
 import java.util.logging.Logger
 
-import org.apache.kafka.streams.kstream.KeyValueMapper
-import org.apache.kafka.streams.scala.{Serdes, StreamsBuilder}
-import org.apache.kafka.streams.scala.kstream._
-import org.apache.kafka.streams.{KafkaStreams, KeyValue, StreamsConfig}
-import org.apache.kafka.streams.scala.Serdes._
+import nl.hvanderheijden.kioto.{Constants, HealthCheck}
+import org.apache.kafka.streams.KafkaStreams
 import org.apache.kafka.streams.scala.ImplicitConversions._
+import org.apache.kafka.streams.scala.Serdes._
+import org.apache.kafka.streams.scala.StreamsBuilder
 
 final class PlainStreamsProcessor(private val brokers: String) {
     private val logger: Logger = Logger.getLogger(this.getClass.getName)

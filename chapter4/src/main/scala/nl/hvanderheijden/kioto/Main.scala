@@ -2,7 +2,7 @@ package nl.hvanderheijden.kioto
 
 import java.util.logging.Logger
 
-import nl.hvanderheijden.kioto.consumers.PlainProcessor
+import nl.hvanderheijden.kioto.consumers.{CustomStreamsProcessor, PlainProcessor, PlainStreamsProcessor}
 import nl.hvanderheijden.kioto.producers.{CustomProducer, PlainProducer}
 
 object Main extends Object with App {
@@ -11,7 +11,7 @@ object Main extends Object with App {
     if (args(0).equals("producer")) {
       new CustomProducer("localhost:29092").produce(2)
     } else {
-      new PlainStreamsProcessor("localhost:29092").process()
+      new CustomStreamsProcessor("localhost:29092").process()
       //new PlainProcessor("localhost:29092").process()
     }
   } else {
