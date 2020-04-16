@@ -21,7 +21,6 @@ final class PlainStreamsProcessor(private val brokers: String) {
 
       val topology = new StreamsBuilder
 
-
       val healthCheckJsonStream = topology.stream[String, String](Constants.getHealthChecksTopic)
 
       val healthCheckStream = healthCheckJsonStream.mapValues(v => {

@@ -32,6 +32,7 @@ class CustomConsumer( private val brokers: String) {
 
   def process(): Unit = {
     consumer.subscribe(Collections.singletonList(Constants.getHealthChecksTopic))
+    @scala.annotation.tailrec
     def loop(): Unit = {
       val records = consumer.poll(Duration.ofSeconds(1L))
       records.forEach( record => {
